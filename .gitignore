@@ -1,0 +1,5 @@
+Parser/node_modules/
+Static server/node_modules/
+Parser/.idea/
+Static server/.idea/encodings.xml
+Static server/.idea/
