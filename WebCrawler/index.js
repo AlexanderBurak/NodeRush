@@ -4,12 +4,10 @@ var async = require('async'),
     fs = require('fs'),
     argv = require('optimist').argv;
 
-
 var startUrl = argv.url,
     level = argv.level,
     resultsUrls = [],
     fileName = "./test.json";
-
 
 var getLinksFromPage = function (urls, callback) {
     async.map(urls, getUrls, function (error, results) {
@@ -17,9 +15,10 @@ var getLinksFromPage = function (urls, callback) {
             console.log(error);
             return callback(null, error);
         }
-        level--;
 
+        level--;
         var childsUri = [];
+
         results.forEach(function (result) {
             for (var i = 0; i < result.length; i++) {
                 if(result[i].indexOf('http://') === 0)
@@ -52,9 +51,6 @@ var getUrls  = function(url,  callback){
 
     });
 };
-
-
-
 
     var writeFile = function (urls, callback) {
 
