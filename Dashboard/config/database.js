@@ -1,3 +1,3 @@
-/**
- * Created by alexander.burak on 04.05.2015.
- */
+module.exports = {
+	'url' : 'mongodb://<user>:<pass>@mongo.onmodulus.net:27017/Mikha4ot'
+}
