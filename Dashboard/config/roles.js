@@ -1,0 +1,1 @@
+var roles = require('connect-roles');

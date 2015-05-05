@@ -20,6 +20,7 @@
     "connect-flash": "latest",
     "method-override": "latest",
     "express-session": "latest",
-    "path": "latest"
+    "path": "latest",
+    "connect-roles" : "latest"
   }
 }
