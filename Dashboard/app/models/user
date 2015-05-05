@@ -8,12 +8,11 @@ var userSchema = mongoose.Schema({
 		email        : String,
 		password     : String,
 		firstName    : String,
-		lastname     : String
+		lastName     : String
 	}
 
 });
 
-// methods ======================
 // generating a hash
 userSchema.methods.generateHash = function(password) {
 	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
