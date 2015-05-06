@@ -22,10 +22,9 @@ mongoose.connect(configDB.url);
 require('./config/passport')(passport);
 
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.engine('swig', swig.renderFile);
-app.set('view engine', 'swig');
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
 
 // required for passport
 app.use(session({
