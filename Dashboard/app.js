@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var session = require('express-session');
-var routes = require('./app/routes.js');
+var routes = require('./routes/routes.js');
 var path = require('path');
 var swig  = require('swig');
 
@@ -38,7 +38,7 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(express.static(path.join(__dirname, 'public')));
 
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

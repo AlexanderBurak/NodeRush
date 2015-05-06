@@ -5,7 +5,7 @@ var userSchema = mongoose.Schema({
 
     local: {
         name: String,
-        id: String
+		date: { type: Date, default: Date.now }
     }
 });
 
