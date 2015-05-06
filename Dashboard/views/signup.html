@@ -1,15 +1,8 @@
-<!doctype html>
-<html>
-<head>
-	<title>Node Authentication</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-	<style>
-		body 		{ padding-top:80px; }
-	</style>
-</head>
-<body>
-<div class="container">
+{% extends 'layouts/layout.html' %}
+
+{% block title %}"{{Model.name}}" Project{% endblock %}
+
+{% block content %}
 
 	<div class="col-sm-6 col-sm-offset-3">
 
@@ -50,6 +43,4 @@
 
 	</div>
 
-</div>
-</body>
-</html>
+{% endblock %}
