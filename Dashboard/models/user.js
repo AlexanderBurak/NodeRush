@@ -9,7 +9,8 @@ var userSchema = mongoose.Schema({
         password: { type: String, required: true },
         firstName: { type: String, required: true },
         lastName: { type: String, required: true },
-		date: { type: Date, default: Date.now }
+		date: { type: Date, default: Date.now },
+		tickets: [ {type : mongoose.Schema.ObjectId, ref : 'Ticket'} ]
     }
 
 });

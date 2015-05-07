@@ -5,8 +5,7 @@ var userSchema = mongoose.Schema({
 
     local: {
         name: { type: String, required: true },
-		date: { type: Date, default: Date.now },
-		tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}]
+		date: { type: Date, default: Date.now }
     }
 });
 

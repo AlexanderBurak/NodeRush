@@ -3,13 +3,13 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
-    local: {
-        name: { type: String, required: true },
-		description :String,
-		date: { type: Date, default: Date.now },
-		statuses: [ {type : mongoose.Schema.ObjectId, ref : 'Status'} ],
-		priorities: [ {type : mongoose.Schema.ObjectId, ref : 'Priority'} ]
-    }
+	local: {
+		name: {type: String, required: true},
+		description: String,
+		date: {type: Date, default: Date.now},
+		status: {type: String, required: true},
+		priorities: {type: String, required: true}
+	}
 
 });
 
