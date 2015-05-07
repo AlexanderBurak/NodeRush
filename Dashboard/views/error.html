@@ -1,4 +1,4 @@
-{% extends 'layouts/base.swig' %}
+{% extends 'layouts/layout.html' %}
 
 {% block title %}
 Error
@@ -8,7 +8,7 @@ Error
 <div class="page container">
 	<div class="row">
 		<div class="text-center">
-			<h1>Do you want some error?</h1>
+			<h1>Error</h1>
 			<h2 class="text-info">{{error.status}}: {{message}}</h2>
 		</div>
 	</div>

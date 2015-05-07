@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
 
     local: {
-        name: String,
+        name: { type: String, required: true },
         description: String,
 		date: { type: Date, default: Date.now }
     }

@@ -4,8 +4,9 @@ var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
 
     local: {
-        name: String,
-		date: { type: Date, default: Date.now }
+        name: { type: String, required: true },
+		date: { type: Date, default: Date.now },
+		tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}]
     }
 });
 

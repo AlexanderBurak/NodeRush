@@ -4,9 +4,11 @@ var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
 
     local: {
-        name: String,
+        name: { type: String, required: true },
 		description :String,
-		date: { type: Date, default: Date.now }
+		date: { type: Date, default: Date.now },
+		statuses: [ {type : mongoose.Schema.ObjectId, ref : 'Status'} ],
+		priorities: [ {type : mongoose.Schema.ObjectId, ref : 'Priority'} ]
     }
 
 });
