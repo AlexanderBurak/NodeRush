@@ -9,13 +9,14 @@ var logger = require('morgan');
 var session = require('express-session');
 var routes = require('./routes/routes.js');
 var path = require('path');
-var swig  = require('swig');
+var swig = require('swig');
+var log = require('./config/log')(module);
 
 var app = express();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 mongoose.connect(configDB.url);
@@ -28,9 +29,9 @@ app.set('view engine', 'html');
 
 // required for passport
 app.use(session({
-	secret: 'alexburak',
-	resave: true,
-	saveUninitialized: true
+    secret: 'alexburak',
+    resave: true,
+    saveUninitialized: true
 })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -40,10 +41,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    log.error('Internal error(%d): %s',res.statusCode,err.message);
+    err.status = 404;
+    next(err);
 });
 
 // error handlers
@@ -51,23 +53,25 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-	app.use(function(err, req, res, next) {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: err
-		});
-	});
+    app.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        log.error('Internal error(%d): %s',res.statusCode,err.message);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-	res.status(err.status || 500);
-	res.render('error', {
-		message: err.message,
-		error: {}
-	});
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    log.error('Internal error(%d): %s',res.statusCode,err.message);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
 

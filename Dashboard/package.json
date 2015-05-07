@@ -21,6 +21,7 @@
     "method-override": "latest",
     "express-session": "latest",
     "path": "latest",
-    "connect-roles" : "latest"
+    "connect-roles" : "latest",
+    "winston" : "latest"
   }
 }
