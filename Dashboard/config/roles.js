@@ -24,4 +24,10 @@ user.use('admin', function (req) {
 	}
 });
 
+user.use('user', function (req) {
+	if(req.user && req.user.role === 'user') {
+		return true;
+	}
+});
+
 module.exports = user;

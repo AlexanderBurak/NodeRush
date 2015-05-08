@@ -19,8 +19,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
 mongoose.connect(configDB.url);
-require('./config/passport')(passport);
+
+var db = mongoose.connection;
+
+db.on('error', function (err) {
+	log.error('connection error:', err.message);
+});
+db.once('open', function callback () {
+	log.info("Connected to DB!");
+});
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -28,17 +38,23 @@ app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 
 // required for passport
+require('./config/passport')(passport)
 app.use(session({
     secret: 'alexburak',
     resave: true,
     saveUninitialized: true
 })); // session secret
+
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', require("./routes/routes"));
 
-require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+
+var user = require('./config/roles');
+app.use(user.middleware());
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -48,7 +64,6 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-// error handlers
 
 // development error handler
 // will print stacktrace
