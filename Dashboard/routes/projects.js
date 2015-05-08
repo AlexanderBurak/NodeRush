@@ -4,7 +4,7 @@ var log = require('./config/log')(module);
 var ProjectModel = require('./model/project');
 var user = require('./config/roles');
 
-router.get('/projects', user.can('admin'), function(req, res) {
+router.get('/projects', user.can('user'), function(req, res) {
 	return ProjectModel.find(function(err, projects) {
 		if(!err) {
 			return res.render('projects', {Model: ProjectModel});
