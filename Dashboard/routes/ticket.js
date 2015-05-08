@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var log = require('./config/log')(module);
+var log = require('../config/log')(module);
 var TicketModel = require('./model/ticket');
-var user = require('./config/roles');
+var user = require('../config/roles');
 
 router.get('/tickets', user.can('user'), function(req, res) {
 	return TicketModel.find(function(err, tickets) {
