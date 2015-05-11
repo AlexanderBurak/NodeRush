@@ -19,13 +19,13 @@ user.use('auth', function (req) {
 });
 
 user.use('admin', function (req) {
-	if(req.user && req.user.role === 'administrator') {
+	if(req.user && req.user.roleName === 'administrator') {
 		return true;
 	}
 });
 
 user.use('user', function (req) {
-	if(req.user && req.user.role === 'user') {
+	if(req.user && req.user.roleName === 'user') {
 		return true;
 	}
 });

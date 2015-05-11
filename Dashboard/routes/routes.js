@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var log = require('../config/log')(module);
 var passport = require('passport');
+var UserModel = require('../models/user');
 
 // HOME PAGE (with login links)
 router.get('/', function(req, res) {
@@ -17,7 +18,7 @@ router.get('/login', function(req, res) {
 
 // process the login form
 router.post('/login', passport.authenticate('local-login', {
-	successRedirect: '/profile', // redirect to the secure profile section
+	successRedirect: '/projects', // redirect to the secure profile section
 	failureRedirect: '/login', // redirect back to the signup page if there is an error
 	failureFlash: true // allow flash messages
 }));
@@ -31,7 +32,7 @@ router.get('/signup', function(req, res) {
 
 // process the signup form
 router.post('/signup', passport.authenticate('local-signup', {
-	successRedirect: '/profile', // redirect to the secure profile section
+	successRedirect: '/projects', // redirect to the secure profile section
 	failureRedirect: '/signup', // redirect back to the signup page if there is an error
 	failureFlash: true // allow flash messages
 }));
@@ -39,8 +40,18 @@ router.post('/signup', passport.authenticate('local-signup', {
 
 // PROFILE SECTION
 router.get('/profile', user.can('user'), function(req, res) {
-	res.render('profile.html', {
-		user: req.user // get the user out of session and pass to template
+	return UserModel.findById(req.user.id, function(err, user) {
+		if(!user) {
+			res.statusCode = 404;
+			return res.send('error', {error: 'Server error 404'});
+		}
+		if(!err) {
+			return res.render('profile', {Model: user});
+		} else {
+			res.statusCode = 500;
+			log.error('Internal error(%d): %s', res.statusCode, err.message);
+			return res.send('error', {error: 'Server error'});
+		}
 	});
 });
 

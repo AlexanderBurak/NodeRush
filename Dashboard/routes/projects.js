@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var log = require('./config/log')(module);
-var ProjectModel = require('./model/project');
+var log = require('../config/log')(module);
+var ProjectModel = require('../models/project');
 var user = require('../config/roles');
 
 router.get('/projects', user.can('user'), function(req, res) {
@@ -14,9 +14,24 @@ router.get('/projects', user.can('user'), function(req, res) {
 			return res.send('error', {error: 'Server error'});
 		}
 	});
+
 });
 
-router.post('/projects', user.can('user'), function(req, res) {
+
+router.get('/project', user.can('user'), function(req, res) {
+	return ProjectModel.find(function(err, projects) {
+		if(!err) {
+			return res.render('project', {Model: ProjectModel});
+		} else {
+			res.statusCode = 500;
+			log.error('Internal error(%d): %s', res.statusCode, err.message);
+			return res.send('error', {error: 'Server error'});
+		}
+	});
+
+});
+
+router.post('/project', user.can('user'), function(req, res) {
 	var project = new ProjectModel({
 		name: req.body.name,
 		description: req.body.description

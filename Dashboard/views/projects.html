@@ -4,43 +4,43 @@
 
 {% block content %}
 
-	<div class="col-sm-6 col-sm-offset-3">
+<div class="row">
+	<h1 class="col-xs-12 col-sm-8">My Projects</h1>
 
-		<h1><span class="fa fa-sign-in"></span> Signup</h1>
-
-		<!-- show any messages that come back with authentication -->
-		{% if message.length > 0 %}
-		<div class="alert alert-danger">{{ message }}</div>
-		{% endif %}
-
-		<!-- LOGIN FORM -->
-		<form action="/signup" method="post">
-			<div class="form-group">
-        				<label>First name</label>
-        				<input type="text" class="form-control" name="firstname">
-        			</div>
-
-        	<div class="form-group">
-					<label>Last Name</label>
-					<input type="text" class="form-control" name="lastname">
-				</div>
-			<div class="form-group">
-				<label>Email</label>
-				<input type="text" class="form-control" name="email">
-			</div>
-			<div class="form-group">
-				<label>Password</label>
-				<input type="password" class="form-control" name="password">
-			</div>
-
-			<button type="submit" class="btn btn-warning btn-lg">Signup</button>
-		</form>
-
-		<hr>
-
-		<p>Already have an account? <a href="/login">Login</a></p>
-		<p>Or go <a href="/">home</a>.</p>
-
+	<div class="col-xs-12 col-sm-4 top-projects-btn-wrapper">
+		<a href="#" class="btn btn-primary">Create new</a>
 	</div>
+	<div class="col-xs-12">
+		<div class="list-group">
+			{% for project in Model.projects %}
+			<div style="position: relative;">
+				<a href="/project/{{project.id}}" class="list-group-item">
+					<h3 class="list-group-item-heading">
+						{{project.name}}
+					</h3>
+
+					<p>
+						{% for status in project.statuses %}
+						<span class="badge hint--bottom" data-hint="{{status.name}}">{{status.tickets.length}}</span>
+						{% endfor %}
+					</p>
+
+					<p class="list-group-item-text hidden-xs">{{project.description}}</p>
+				</a>
+
+				<div class="controls clearfix visible-lg" style="position: absolute; right: 10px; top: 10px;">
+					<a class="pull-left" href="/project/{{project.id}}/edit"><h3 style="margin: 0 5px;"><span
+							class="glyphicon glyphicon-pencil text-info" aria-hidden="true"></span></h3></a>
+					<a class="pull-left" href="/project/{{project.id}}/delete"><h3 style="margin: 0 5px;"><span
+							class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span></h3></a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="col-xs-12 text-center">
+		<a href="/project" class="btn btn-primary">Create new</a>
+	</div>
+</div>
 
 {% endblock %}

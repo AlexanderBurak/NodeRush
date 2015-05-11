@@ -3,10 +3,8 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
-	local: {
-		name: {type: String, required: true},
-		date: {type: Date, default: Date.now}
-	}
+	name: {type: String, required: true},
+	date: {type: Date, default: Date.now}
 
 });
 
