@@ -12,9 +12,9 @@
 	</div>
 	<div class="col-xs-12">
 		<div class="list-group">
-			{% for project in Model.projects %}
+			{% for project in Model %}
 			<div style="position: relative;">
-				<a href="/project/{{project.id}}" class="list-group-item">
+				<a href="/projects/{{project.id}}" class="list-group-item">
 					<h3 class="list-group-item-heading">
 						{{project.name}}
 					</h3>
@@ -29,9 +29,9 @@
 				</a>
 
 				<div class="controls clearfix visible-lg" style="position: absolute; right: 10px; top: 10px;">
-					<a class="pull-left" href="/project/{{project.id}}/edit"><h3 style="margin: 0 5px;"><span
+					<a class="pull-left" href="/projects/{{project.id}}/edit"><h3 style="margin: 0 5px;"><span
 							class="glyphicon glyphicon-pencil text-info" aria-hidden="true"></span></h3></a>
-					<a class="pull-left" href="/project/{{project.id}}/delete"><h3 style="margin: 0 5px;"><span
+					<a class="pull-left" href="/projects/{{project.id}}/delete"><h3 style="margin: 0 5px;"><span
 							class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span></h3></a>
 				</div>
 			</div>

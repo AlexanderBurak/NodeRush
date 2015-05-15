@@ -18,7 +18,7 @@ router.get('/login', function(req, res) {
 
 // process the login form
 router.post('/login', passport.authenticate('local-login', {
-	successRedirect: '/projects', // redirect to the secure profile section
+	successRedirect: '/dashboard',
 	failureRedirect: '/login', // redirect back to the signup page if there is an error
 	failureFlash: true // allow flash messages
 }));
@@ -32,7 +32,7 @@ router.get('/signup', function(req, res) {
 
 // process the signup form
 router.post('/signup', passport.authenticate('local-signup', {
-	successRedirect: '/projects', // redirect to the secure profile section
+	successRedirect: '/dashboard', // redirect to the secure profile section
 	failureRedirect: '/signup', // redirect back to the signup page if there is an error
 	failureFlash: true // allow flash messages
 }));

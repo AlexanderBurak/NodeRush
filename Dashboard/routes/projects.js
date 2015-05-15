@@ -5,9 +5,9 @@ var ProjectModel = require('../models/project');
 var user = require('../config/roles');
 
 router.get('/projects', user.can('user'), function(req, res) {
-	return ProjectModel.find(function(err, projects) {
+	return ProjectModel.find({},function(err, projects) {
 		if(!err) {
-			return res.render('projects', {Model: ProjectModel});
+			return res.render('projects', {Model: projects});
 		} else {
 			res.statusCode = 500;
 			log.error('Internal error(%d): %s', res.statusCode, err.message);
@@ -19,16 +19,7 @@ router.get('/projects', user.can('user'), function(req, res) {
 
 
 router.get('/project', user.can('user'), function(req, res) {
-	return ProjectModel.find(function(err, projects) {
-		if(!err) {
-			return res.render('project', {Model: ProjectModel});
-		} else {
-			res.statusCode = 500;
-			log.error('Internal error(%d): %s', res.statusCode, err.message);
-			return res.send('error', {error: 'Server error'});
-		}
-	});
-
+			return res.render('project');
 });
 
 router.post('/project', user.can('user'), function(req, res) {
@@ -40,7 +31,7 @@ router.post('/project', user.can('user'), function(req, res) {
 	project.save(function(err) {
 		if(!err) {
 			log.info("project created");
-			return res.redirect('/project/' + ProjectModel.projectId);
+			return res.redirect('/projects/' + project.id);
 		} else {
 			console.log(err);
 			if(err.name == 'ValidationError') {
@@ -62,7 +53,7 @@ router.get('/projects/:id', user.can('user'), function(req, res) {
 			return res.send('error', {error: 'Server error 404'});
 		}
 		if(!err) {
-			return res.render('project', {Model: ProjectModel});
+			return res.render('project', {Model: project});
 		} else {
 			res.statusCode = 500;
 			log.error('Internal error(%d): %s', res.statusCode, err.message);

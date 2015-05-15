@@ -4,10 +4,10 @@ var log = require('../config/log')(module);
 var TicketModel = require('../models/ticket');
 var user = require('../config/roles');
 
-router.get('/tickets', user.can('user'), function(req, res) {
-	return TicketModel.find(function(err, tickets) {
+router.get('/dashboard', user.can('user'), function(req, res) {
+	return TicketModel.find({},function(err, tickets) {
 		if(!err) {
-			return res.render('tickets', {Model: TicketModel});
+			return res.render('dashboard', {Model: tickets});
 		} else {
 			res.statusCode = 500;
 			log.error('Internal error(%d): %s', res.statusCode, err.message);
@@ -16,7 +16,11 @@ router.get('/tickets', user.can('user'), function(req, res) {
 	});
 });
 
-router.post('/tickets', user.can('user'), function(req, res) {
+router.get('/ticket', user.can('user'), function(req, res) {
+	return res.render('ticket');
+});
+
+router.post('/ticket', user.can('user'), function(req, res) {
 	var ticket = new TicketModel({
 		name: req.body.name,
 		description: req.body.description
@@ -25,7 +29,7 @@ router.post('/tickets', user.can('user'), function(req, res) {
 	ticket.save(function(err) {
 		if(!err) {
 			log.info("ticket created");
-			return res.redirect('/ticket/' + TicketModel.ticketId);
+			return res.redirect('/ticket/' + ticket.id);
 		} else {
 			console.log(err);
 			if(err.name == 'ValidationError') {
@@ -47,7 +51,7 @@ router.get('/tickets/:id', user.can('user'), function(req, res) {
 			return res.send('error', {error: 'Server error 404'});
 		}
 		if(!err) {
-			return res.render('ticket', {Model: TicketModel});
+			return res.render('ticket', {Model: ticket});
 		} else {
 			res.statusCode = 500;
 			log.error('Internal error(%d): %s', res.statusCode, err.message);
@@ -69,7 +73,7 @@ router.put('/tickets/:id', user.can('user'), function(req, res) {
 		return ticket.save(function(err) {
 			if(!err) {
 				log.info("article updated");
-				return res.redirect('/ticket/' + TicketModel.ticketId);
+				return res.redirect('/ticket/' + ticket.id);
 			} else {
 				if(err.name == 'ValidationError') {
 					res.statusCode = 400;
@@ -93,7 +97,7 @@ router.delete('/tickets/:id', user.can('user'), function(req, res) {
 		return ticket.remove(function(err) {
 			if(!err) {
 				log.info("article removed");
-				return res.redirect('/tickets/' + TicketModel.ticketId);
+				return res.redirect('/dashboard');
 			} else {
 				res.statusCode = 500;
 				log.error('Internal error(%d): %s', res.statusCode, err.message);
