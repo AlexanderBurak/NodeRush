@@ -23,7 +23,10 @@ router.get('/ticket', user.can('user'), function(req, res) {
 router.post('/ticket', user.can('user'), function(req, res) {
 	var ticket = new TicketModel({
 		name: req.body.name,
-		description: req.body.description
+		description: req.body.description,
+		status: req.body.status,
+		priority: req.body.priority
+
 	});
 
 	ticket.save(function(err) {
