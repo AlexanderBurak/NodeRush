@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
 	salt: {type: String},
 	date: {type: Date, default: Date.now},
 	roleName: {type: String, default: 'user'},
-	tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}]
+    tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}]
 
 });
 

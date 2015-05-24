@@ -6,8 +6,10 @@ var userSchema = mongoose.Schema({
 	name: {type: String, required: true},
 	description: String,
 	date: {type: Date, default: Date.now},
-	status: {type: String, required: true},
-	priority: {type: String, required: true}
+	status: {type: mongoose.Schema.ObjectId, ref: 'Status'},
+	priority: {type: String, required: true},
+    project: {type: mongoose.Schema.ObjectId, ref: 'Project'},
+    user:{type: mongoose.Schema.ObjectId, ref: 'User'}
 
 
 });

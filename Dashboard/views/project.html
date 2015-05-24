@@ -5,57 +5,129 @@
 {% block content %}
 
 <div class="row">
-	<form action="" method="POST">
-		<div class="col-xs-12 col-sm-6 col-lg-8">
-			<div class="form-group">
-				<label for="name">Project Name</label>
-				<input type="text" class="form-control" name="name" id="name" placeholder="Project Name"
-					   required="required" value="{{Model.name}}"/>
-			</div>
+    <form action="" method="POST">
+        <div class="col-xs-12 col-sm-6 col-lg-8">
+            <div class="form-group">
+                <label for="name">Project Name</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="Project Name"
+                       required="required" value="{{Model.name}}"/>
+            </div>
 
-			<div class="form-group">
-				<label for="description">Project Description</label>
+            <div class="form-group">
+                <label for="description">Project Description</label>
 				<textarea class="form-control" name="description" id="description" style="min-height: 120px;"
-						  placeholder="Project Description">{{Model.description}}</textarea>
-			</div>
-		</div>
-		<div class="col-xs-12 col-sm-3 col-lg-2">
-			<label>Priorities</label>
-			<ul class="list-group">
-				{% for priority in Model.priorities %}
-				<li class="list-group-item">
-					<i style="background: {{priority.color}}; display: inline-block; width: 16px; height: 16px;"></i>
-					<span>{{priority.name}}</span>
-				</li>
-				{% endfor %}
-			</ul>
-			<div class="form-group text-center">
-				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#priorityModal">Add
-				</button>
-			</div>
-		</div>
-		<div class="col-xs-12 col-sm-3 col-lg-2 text-center">
-			<label>Statuses</label>
-			<ul class="list-group">
-				{% for status in Model.statuses %}
-				<li class="list-group-item">{{status.name}}</li>
-				{% endfor %}
-			</ul>
-			<div class="form-group">
-				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#statusModal">Add
-				</button>
-			</div>
-		</div>
-		<div class="col-xs-12">
-			<hr/>
-		</div>
-		<div class="col-xs-12 text-center">
+                          placeholder="Project Description">{{Model.description}}</textarea>
+            </div>
+        </div>
 
-			<a href="../" class="btn btn-danger">Delete</a>
-			<a href="./" class="btn btn-default">Cancel</a>
-			<button type="submit" class="btn btn-primary">Save Project</button>
-		</div>
-	</form>
+        <div class="col-xs-12 col-sm-3 col-lg-2">
+            {% if Model.priorities.length>0 %}
+            <label>Priorities</label>
+            <ul class="list-group">
+                {% for priority in Model.priorities %}
+                <li class="list-group-item">
+                    <i style="background: {{priority.color}}; display: inline-block; width: 16px; height: 16px;"></i>
+                    <span>{{priority.name}}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="form-group text-center">
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#priorityModal">Add
+                </button>
+            </div>
+        </div>
+
+
+
+        <div class="col-xs-12 col-sm-3 col-lg-2 text-center">
+            {% if Model.statuses.length>0 %}
+            <label>Statuses</label>
+            <ul class="list-group">
+                {% for status in Model.statuses %}
+                <li class="list-group-item">{{status.name}}</li>
+                {% endfor %}
+            </ul>
+
+            {% endif %}
+            <div class="form-group">
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#statusModal">Add
+                </button>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <hr/>
+        </div>
+        <div class="col-xs-12 text-center">
+
+            <a href="../" class="btn btn-danger">Delete</a>
+            <a href="./" class="btn btn-default">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Project</button>
+        </div>
+    </form>
+    <!-- Priority Modal -->
+    <div class="modal fade" id="priorityModal" tabindex="-1" role="dialog" aria-labelledby="priorityModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="priorityModalLabel">Priority</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="priorityName">Priority Name</label>
+                        <input type="text" class="form-control" id="priorityName" name="priorityName"
+                               placeholder="Priority Name" required="required" value=""/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priorityColor">Priority Color</label>
+
+                        <div class="input-group c-picker">
+                            <span class="input-group-addon"><i></i></span>
+                            <input type="text" value="#FFFFFF" name="priorityColor" class="form-control"
+                                   id="priorityColor"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Status Modal -->
+    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="statusModalLabel">Status</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="statusName">Status Name</label>
+                        <input type="text" class="form-control" name="statusName" id="statusName"
+                               placeholder="Status Name" required="required" value=""/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </div>
+
+
+
 {% endblock %}

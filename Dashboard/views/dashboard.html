@@ -5,45 +5,46 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-xs-12 col-sm-8">
-		<h1 style="margin: 10px 0 5px;">{{Model.name}}</h1>
-	</div>
+    <div class="col-xs-12 col-sm-8">
+        <h1 style="margin: 10px 0 5px;">{{Model.name}}</h1>
+    </div>
 
-	<div class="col-xs-6 col-sm-2 text-right">
-		<a href="/project/{{Model.id}}/edit" class="btn btn-default btn-small block-xs" style="margin: 15px 0 0;">Edit
-			Project</a>
-	</div>
-	<div class="col-xs-6 col-sm-2 text-right">
-		<a href="" class="btn btn-primary btn-small block-xs" style="margin: 15px 0 0;">Add Ticket</a>
-	</div>
+    <div class="col-xs-6 col-sm-2 text-right">
+        <a href="/project/edit/{{Model.id}}" class="btn btn-default btn-small block-xs" style="margin: 15px 0 0;">Edit
+            Project</a>
+    </div>
+    <div class="col-xs-6 col-sm-2 text-right">
+        <a href="/ticket" class="btn btn-primary btn-small block-xs" style="margin: 15px 0 0;">Add Ticket</a>
+    </div>
 
-	<h5 class="col-xs-12 hidden-xs">{{Model.description}}</h5>
+    <h5 class="col-xs-12 hidden-xs">{{Model.description}}</h5>
 
-	<div class="col-xs-12">
-		<hr style="margin: 5px 0;"/>
-	</div>
-	<div style="overflow-x: auto; width: 100%;">
-		<div class="board">
-			{% for status in Model.statuses %}
-			<div class="status">
-				<div class="name">{{status.name}}</div>
-				{% for ticket in status.tickets %}
-				<a class="ticket panel panel-default" href="/project/{{Model.id}}/ticket/{{ticket.id}}">
-					<div class="info panel-heading">
-						<span class="priority hint--right" data-hint="{{Model.priorities[ticket.priority].name}}"
-							  style="{{'background: ' + Model.priorities[ticket.priority].color}}"></span>
-						<span class="name">#{{ticket.number}}</span>
-										<span class="assignee hint--left" data-hint="{{ticket.assignee.name}}">
-											<img src="../../../img/account.png" alt="{{ticket.assignee.name}}"/>
+    <div class="col-xs-12">
+        <hr style="margin: 5px 0;"/>
+    </div>
+    <div style="overflow-x: auto; width: 100%;">
+        <div class="board">
+            {% for status in Model.statuses %}
+            <div class="status">
+                <div class="name">{{status.name}}</div>
+                {% for ticket in status.tickets %}
+                <a class="ticket panel panel-default" href="/tickets/{{ticket.id}}">
+                    <div class="info panel-heading">
+						<span class="priority hint--right"
+                              style="{{'background: ' +  Model.priorities[ticket.priority].color}}">{{ticket.priority}}</span>
+                        <span class="name">#{{ticket.number}}</span>
+										<span class="assignee hint--left"
+                                              data-hint="{{ticket.user.firstName +' ' +ticket.user.lastName}}">
+
 										</span>
-					</div>
-					<div class="description panel-body">{{ticket.name}}</div>
-				</a>
-				{% endfor %}
-			</div>
-			{% endfor %}
-		</div>
-	</div>
+                    </div>
+                    <div class="description panel-body">{{ticket.name}}</div>
+                </a>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 {% endblock %}

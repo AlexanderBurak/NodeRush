@@ -15,6 +15,7 @@ var log = require('../config/log')(module);
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+log.info('Express server listening on port ' + port);
 
 /**
  * Create HTTP server.

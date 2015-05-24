@@ -4,17 +4,6 @@ var log = require('../config/log')(module);
 var TicketModel = require('../models/ticket');
 var user = require('../config/roles');
 
-router.get('/dashboard', user.can('user'), function(req, res) {
-	return TicketModel.find({},function(err, tickets) {
-		if(!err) {
-			return res.render('dashboard', {Model: tickets});
-		} else {
-			res.statusCode = 500;
-			log.error('Internal error(%d): %s', res.statusCode, err.message);
-			return res.send('error', {error: 'Server error'});
-		}
-	});
-});
 
 router.get('/ticket', user.can('user'), function(req, res) {
 	return res.render('ticket');
