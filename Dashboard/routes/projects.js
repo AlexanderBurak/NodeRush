@@ -4,6 +4,8 @@ var log = require('../config/log')(module);
 var ProjectModel = require('../models/project');
 var StatusModel = require('../models/status');
 var PriorityModel = require('../models/priority');
+var TicketModel = require('../models/ticket');
+var UserModel = require('../models/user');
 var user = require('../config/roles');
 
 router.get('/projects', user.can('user'), function (req, res) {
@@ -21,16 +23,20 @@ router.get('/projects', user.can('user'), function (req, res) {
 
 
 router.get('/dashboard/:id', user.can('user'), function (req, res) {
-    return ProjectModel.find(req.params.id).populate('Status').populate('Ticket')
-        .populate('Priority').exec(function (err, project) {
-            if (!err) {
-                return res.render('dashboard', {Model: project});
-            } else {
-                res.statusCode = 500;
-                log.error('Internal error(%d): %s', res.statusCode, err.message);
-                return res.send('error', {error: 'Server error'});
-            }
-        });
+    return ProjectModel.findById(req.params.id).populate('statuses tickets priorities').exec(function (err, project) {
+        if (!err) {
+            UserModel.find({}, function (err, users) {
+                if (!err) {
+                    project.users = users;
+                    return res.render('dashboard', {Model: project});
+                }
+            });
+        } else {
+            res.statusCode = 500;
+            log.error('Internal error(%d): %s', res.statusCode, err.message);
+            return res.send('error', {error: 'Server error'});
+        }
+    });
 });
 
 
@@ -51,8 +57,7 @@ router.post('/project', user.can('user'), function (req, res) {
         } else {
             console.log(err);
             if (err.name == 'ValidationError') {
-                res.statusCode = 400;
-                res.send('error', {error: 'Validation error'});
+                req.flash('validationError', 'Oops! Wrong data. Please enter valid data');
             } else {
                 res.statusCode = 500;
                 res.send('error', {error: 'Server error'});
@@ -63,14 +68,16 @@ router.post('/project', user.can('user'), function (req, res) {
 });
 
 router.get('/projects/:id', user.can('user'), function (req, res) {
-    return ProjectModel.findById(req.params.id, function (err, project) {
+
+    return ProjectModel.findById(req.params.id).populate('statuses priorities').exec(function (err, project) {
         if (!project) {
             res.statusCode = 404;
-            return res.send('error', {error: 'Server error 404'});
+            return res.send('error', {error: 'Server  error 404'});
         }
         if (!err) {
             return res.render('project', {Model: project});
-        } else {
+        }
+        else {
             res.statusCode = 500;
             log.error('Internal error(%d): %s', res.statusCode, err.message);
             return res.send('error', {error: 'Server error'});
@@ -94,8 +101,7 @@ router.put('/projects/:id', user.can('user'), function (req, res) {
                 return res.redirect('/project/' + ProjectModel.projectId);
             } else {
                 if (err.name == 'ValidationError') {
-                    res.statusCode = 400;
-                    res.send('error', {error: 'Validation error'});
+                    req.flash('validationError', 'Oops! Wrong data. Please enter valid data');
                 } else {
                     res.statusCode = 500;
                     res.send('error', {error: 'Server error'});
@@ -126,22 +132,29 @@ router.delete('/projects/:id', user.can('user'), function (req, res) {
 });
 
 
-
 router.post('/status/:id', user.can('user'), function (req, res) {
     var status = new StatusModel({
-        name: req.body.name,
-        project:req.params.id
+        name: req.body.statusName,
+        _project: req.params.id
     });
+
 
     status.save(function (err) {
         if (!err) {
             log.info("status created");
-            return res.redirect('/projects/' + req.params.id);
+            ProjectModel.findById(req.params.id, function (err, project) {
+                project.statuses.push(status);
+                return project.save(function (err) {
+                    if (!err) {
+                        log.info("project priorities updated");
+                        return res.redirect('/projects/' + req.params.id);
+                    }
+                });
+            });
         } else {
             console.log(err);
             if (err.name == 'ValidationError') {
-                res.statusCode = 400;
-                res.send('error', {error: 'Validation error'});
+                req.flash('validationError', 'Oops! Wrong data. Please enter valid data');
             } else {
                 res.statusCode = 500;
                 res.send('error', {error: 'Server error'});
@@ -172,19 +185,27 @@ router.delete('/statuses/:id', user.can('user'), function (req, res) {
 
 router.post('/priority/:id', user.can('user'), function (req, res) {
     var priority = new PriorityModel({
-        name: req.body.name,
-        project:req.params.id
+        name: req.body.priorityName,
+        color: req.body.priorityColor,
+        _project: req.params.id
     });
 
     priority.save(function (err) {
         if (!err) {
-            log.info("status created");
-            return res.redirect('/projects/' + req.params.id);
+            log.info("priority created");
+            ProjectModel.findById(req.params.id, function (err, project) {
+                project.priorities.push(priority);
+                return project.save(function (err) {
+                    if (!err) {
+                        log.info("project priorities updated");
+                        return res.redirect('/projects/' + req.params.id);
+                    }
+                });
+            });
         } else {
             console.log(err);
             if (err.name == 'ValidationError') {
-                res.statusCode = 400;
-                res.send('error', {error: 'Validation error'});
+                req.flash('validationError', 'Oops! Wrong data. Please enter valid data');
             } else {
                 res.statusCode = 500;
                 res.send('error', {error: 'Server error'});
@@ -195,6 +216,7 @@ router.post('/priority/:id', user.can('user'), function (req, res) {
 });
 
 router.delete('/priorities/:id', user.can('user'), function (req, res) {
+
     return PriorityModel.findById(req.params.id, function (err, priority) {
         if (!priority) {
             res.statusCode = 404;

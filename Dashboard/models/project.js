@@ -1,16 +1,18 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 // define the schema for our user model
-var userSchema = mongoose.Schema({
+var ProjectSchema = new mongoose.Schema({
 
     name: {type: String, required: true},
     description: String,
     date: {type: Date, default: Date.now},
-    status: [{type: mongoose.Schema.ObjectId, ref: 'Status'}],
-    priorities: [{type: mongoose.Schema.ObjectId, ref: 'Priority'}],
-    tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}],
-    userId: {type: mongoose.Schema.ObjectId, ref: 'User'}
+    statuses: [{type:Schema.Types.ObjectId, ref: 'Status'}],
+    priorities: [{type: Schema.Types.ObjectId, ref: 'Priority'}],
+    tickets: [{type: Schema.Types.ObjectId, ref: 'Ticket'}],
+    users: [{type:Schema.Types.ObjectId, ref: 'User'}],
+    _user: {type: Schema.Types.ObjectId, ref: 'User'}
 });
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('Project', userSchema);
+module.exports = mongoose.model('Project', ProjectSchema);

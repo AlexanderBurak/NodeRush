@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var Schema = mongoose.Schema;
 
 // define the schema for our user model
-var userSchema = mongoose.Schema({
+var userSchema = new mongoose.Schema({
 
 	firstName: {type: String, required: true},
 	lastName: {type: String},
@@ -11,7 +12,7 @@ var userSchema = mongoose.Schema({
 	salt: {type: String},
 	date: {type: Date, default: Date.now},
 	roleName: {type: String, default: 'user'},
-    tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}]
+    tickets: [{type: Schema.Types.ObjectId, ref: 'Ticket'}]
 
 });
 

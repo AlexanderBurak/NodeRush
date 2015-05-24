@@ -13,8 +13,8 @@ router.post('/ticket', user.can('user'), function(req, res) {
 	var ticket = new TicketModel({
 		name: req.body.name,
 		description: req.body.description,
-		status: req.body.status,
-		priority: req.body.priority
+		_status: req.body.status,
+		_priority: req.body.priority
 
 	});
 
@@ -25,8 +25,7 @@ router.post('/ticket', user.can('user'), function(req, res) {
 		} else {
 			console.log(err);
 			if(err.name == 'ValidationError') {
-				res.statusCode = 400;
-				res.send('error', {error: 'Validation error'});
+                req.flash('validationError', 'Oops! Wrong data. Please enter valid data');
 			} else {
 				res.statusCode = 500;
 				res.send('error', {error: 'Server error'});
@@ -68,8 +67,7 @@ router.put('/tickets/:id', user.can('user'), function(req, res) {
 				return res.redirect('/ticket/' + ticket.id);
 			} else {
 				if(err.name == 'ValidationError') {
-					res.statusCode = 400;
-					res.send('error', {error: 'Validation error'});
+                    req.flash('validationError', 'Oops! Wrong data. Please enter valid data');
 				} else {
 					res.statusCode = 500;
 					res.send('error', {error: 'Server error'});
