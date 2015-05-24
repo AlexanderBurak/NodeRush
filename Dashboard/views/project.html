@@ -29,20 +29,19 @@
             <label>Priorities</label>
             <ul class="list-group">
                 {% for priority in Model.priorities %}
-                <li class="list-group-item">
-
-                    <i style="background: {{priority.color}}; display: inline-block; width: 16px; height: 16px;"></i>
+                <li class="list-group-item" style="border: 1px solid  {{priority.color}}; margin-bottom:5px;">
                     <span>{{priority.name}}</span>
+
                     <form method="delete" action="/priorities/{{priority.id}}">
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#priorityModal">Delete
-                        </button>
+                        <button type="submit" class="btn btn-danger ">X</button>
                     </form>
                 </li>
                 {% endfor %}
             </ul>
 
             <div class="form-group text-center">
-                <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#priorityModal">Add
+                <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#priorityModal">
+                    Add
                 </button>
             </div>
         </div>
@@ -54,11 +53,12 @@
             <label>Statuses</label>
             <ul class="list-group">
                 {% for status in Model.statuses %}
-                <li class="list-group-item">{{status.name}}</li>
-                <form method="delete" action="/statuses/{{status.id}}">
-                    <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#priorityModal">Delete
-                    </button>
-                </form>
+                <li class="list-group-item"><span>{{status.name}}</span>
+
+                    <form method="delete" action="/statuses/{{status.id}}">
+                        <button type="submit" class="btn btn-danger ">X</button>
+                    </form>
+                </li>
                 {% endfor %}
             </ul>
 
@@ -143,7 +143,6 @@
         </div>
     </div>
 </div>
-
 
 
 {% endblock %}

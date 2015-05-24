@@ -47,7 +47,8 @@ router.get('/project', user.can('user'), function (req, res) {
 router.post('/project', user.can('user'), function (req, res) {
     var project = new ProjectModel({
         name: req.body.name,
-        description: req.body.description
+        description: req.body.description,
+        _user: req.user.id
     });
 
     project.save(function (err) {

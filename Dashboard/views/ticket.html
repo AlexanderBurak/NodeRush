@@ -14,7 +14,7 @@
                 <label for="priority">Priority</label>
                 <select class="form-control" name="priority" id="priority">
                     {% for priority in Model.priorities %}
-                    <option value="{{priority.id}}">{{priority.name}}</option>
+                    <option value="{{priority.name}}">{{priority.name}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -31,7 +31,7 @@
                 <label for="status">Assaine</label>
                 <select class="form-control" name="user" id="user">
                     {% for user in Model.users %}
-                    <option value="{{user.id}}">{{user.firstName +' '+ user.lastName}}</option>
+                    <option value="{{user.email}}">{{user.firstName +' '+ user.lastName}}</option>
                     {% endfor %}
                 </select>
             </div>

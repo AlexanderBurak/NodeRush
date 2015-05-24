@@ -10,7 +10,8 @@
     </div>
 
     <div class="col-xs-6 col-sm-2 text-right">
-        <a href="/ticket" class="btn btn-primary btn-small block-xs" style="margin: 15px 0 0;">Add Ticket</a>
+        <a href="/ticket/{{Model.id}}" class="btn btn-primary btn-small block-xs" style="margin: 15px 0 0;">Add
+            Ticket</a>
     </div>
 
     <h5 class="col-xs-12 hidden-xs">{{Model.description}}</h5>
@@ -23,12 +24,12 @@
             {% for status in Model.statuses %}
             <div class="status">
                 <div class="name">{{status.name}}</div>
-                {% for ticket in status.tickets %}
+                {% for ticket in Model.tickets %}
+
+                {% if ticket._status.toString() == status.id %}
                 <a class="ticket panel panel-default" href="/tickets/{{ticket.id}}">
                     <div class="info panel-heading">
-						<span class="priority hint--right"
-                              style="{{'background: ' +  Model.priorities[ticket.priority].color}}">{{ticket.priority}}</span>
-                        <span class="name">#{{ticket.number}}</span>
+						<span class="priority hint--right">{{ticket.priority}}</span>
 										<span class="assignee hint--left"
                                               data-hint="{{ticket.user.firstName +' ' +ticket.user.lastName}}">
 
@@ -36,6 +37,8 @@
                     </div>
                     <div class="description panel-body">{{ticket.name}}</div>
                 </a>
+                {% endif %}
+
                 {% endfor %}
             </div>
             {% endfor %}
