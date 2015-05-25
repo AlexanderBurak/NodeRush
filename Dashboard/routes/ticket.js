@@ -118,7 +118,9 @@ router.post('/tickets/:id', user.can('user'), function (req, res) {
 
         ticket.name = req.body.name;
         ticket.description = req.body.description;
-
+		ticket._status = req.body.status;
+		ticket._priority = req.body.priority;
+		ticket._user = req.body.user;
         return ticket.save(function (err) {
             if (!err) {
                 log.info("article updated");
