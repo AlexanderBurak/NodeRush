@@ -1,8 +1,55 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	padding: 50px;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
+}
+
+.status {
+	float: left;
+	height: 100%;
+	border-right: 3px solid #f0ad4e;
+	border-top: 3px solid #f0ad4e;
+	border-bottom: 3px solid #f0ad4e;
+	min-height: 500px;
+	padding: 15px;
+
+}
+
+.status .name {
+	padding: 20px;
+	text-align: center;
+	border-bottom: 1px solid #f0ad4e;
+}
+
+.board .status:first-child {
+	border-left: 3px solid #f0ad4e;
+}
+
+li.list-group-item {
+	height: 70px;
+}
+
+.txt-property {
+	float: left;
+	margin-top: 14px;
+	max-width: 86px;
+	text-align: left;
+}
+
+.delete-property{
+	float: right;
+	margin-top: 7px;
+}
+a.ticket {
+	border: 1px solid;
+	display: block;
+	margin-top: 20px;
+}
+
+footer.footer {
+	bottom: 0px;
+	position: absolute;
 }

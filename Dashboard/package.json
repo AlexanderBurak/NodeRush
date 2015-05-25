@@ -22,6 +22,8 @@
     "express-session": "latest",
     "path": "latest",
     "connect-roles" : "latest",
-    "winston" : "latest"
+    "winston" : "latest",
+    "mongoose-deep-populate" : "latest"
+
   }
 }

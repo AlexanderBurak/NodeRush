@@ -6,7 +6,6 @@ var PrioritySchema = new mongoose.Schema({
 
     name: {type: String, required: true},
     date: {type: Date, default: Date.now},
-    color: {type: String, required: false},
     _project: {type: Schema.Types.ObjectId, ref: 'Project'}
 
 });

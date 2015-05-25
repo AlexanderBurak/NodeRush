@@ -5,45 +5,39 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-xs-12 col-sm-8">
-        <h1 style="margin: 10px 0 5px;">{{Model.name}}</h1>
-    </div>
+	<div class="col-xs-12 col-sm-8">
+		<h1 style="margin: 10px 0 5px;">{{Model.name}}</h1>
+	</div>
 
-    <div class="col-xs-6 col-sm-2 text-right">
-        <a href="/ticket/{{Model.id}}" class="btn btn-primary btn-small block-xs" style="margin: 15px 0 0;">Add
-            Ticket</a>
-    </div>
+	<div class="col-xs-6 col-sm-2 text-right">
+		<a href="/ticket/{{Model.id}}" class="btn btn-primary btn-small block-xs" style="margin: 15px 0 0;">Add
+			Ticket</a>
+	</div>
 
-    <h5 class="col-xs-12 hidden-xs">{{Model.description}}</h5>
+	<h5 class="col-xs-12 hidden-xs">{{Model.description}}</h5>
 
-    <div class="col-xs-12">
-        <hr style="margin: 5px 0;"/>
-    </div>
-    <div style="overflow-x: auto; width: 100%;">
-        <div class="board">
-            {% for status in Model.statuses %}
-            <div class="status">
-                <div class="name">{{status.name}}</div>
-                {% for ticket in Model.tickets %}
+	<div style="overflow-x: auto; width: 100%;">
+		<div class="board">
+			{% for status in Model.statuses %}
+			<div class="status" style="width:{{ 100/Model.statuses.length }}%">
+				<div class="name">{{status.name}}</div>
+				{% for ticket in Model.tickets %}
 
-                {% if ticket._status.toString() == status.id %}
-                <a class="ticket panel panel-default" href="/tickets/{{ticket.id}}">
-                    <div class="info panel-heading">
-						<span class="priority hint--right">{{ticket.priority}}</span>
-										<span class="assignee hint--left"
-                                              data-hint="{{ticket.user.firstName +' ' +ticket.user.lastName}}">
+				{% if ticket._status.toString() == status.id %}
+				<a class="ticket panel panel-default" href="/tickets/{{ ticket.id }}">
+					<div class="info panel-heading">
+						<span class="priority">{{ ticket._priority }}</span>
+						<span class="user">	{{ticket._user.firstName + ' ' + ticket._user.lastName }}</span>
+					</div>
+					<div class="description panel-body">{{ticket.name}}</div>
+				</a>
+				{% endif %}
 
-										</span>
-                    </div>
-                    <div class="description panel-body">{{ticket.name}}</div>
-                </a>
-                {% endif %}
-
-                {% endfor %}
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+				{% endfor %}
+			</div>
+			{% endfor %}
+		</div>
+	</div>
 </div>
 
 {% endblock %}

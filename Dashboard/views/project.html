@@ -9,7 +9,7 @@
     <div class="alert alert-danger">{{ message }}</div>
     {% endif %}
     <form action="" method="POST">
-        <div class="col-xs-12 col-sm-6 col-lg-8">
+        <div class="col-xs-12 col-sm-6 col-lg-6">
             <div class="form-group">
                 <label for="name">Project Name</label>
                 <input type="text" class="form-control" name="name" id="name" placeholder="Project Name"
@@ -21,18 +21,27 @@
 				<textarea class="form-control" name="description" id="description" style="min-height: 120px;"
                           placeholder="Project Description">{{Model.description}}</textarea>
             </div>
+
+			<div class="form-group text-center">
+				<button type="submit" class="btn btn-primary">Save Project</button>
+				{% if Model %}
+				<a href="/removeProject/{{Model.id}}" class="btn btn-danger">Delete</a>
+				{% endif %}
+				<a href="./" class="btn btn-default">Cancel</a>
+
+			</div>
         </div>
 
-        {% if Model %}
-        <div class="col-xs-12 col-sm-3 col-lg-2">
+	</form>
 
+        {% if Model %}
+        <div class="col-xs-12 col-sm-3 col-lg-3">
             <label>Priorities</label>
             <ul class="list-group">
                 {% for priority in Model.priorities %}
-                <li class="list-group-item" style="border: 1px solid  {{priority.color}}; margin-bottom:5px;">
-                    <span>{{priority.name}}</span>
-
-                    <form method="delete" action="/priorities/{{priority.id}}">
+                <li class="list-group-item" >
+                    <span class="txt-property">{{priority.name}}</span>
+                    <form method="post" action="/priorities/{{priority.id}}" class="delete-property">
                         <button type="submit" class="btn btn-danger ">X</button>
                     </form>
                 </li>
@@ -45,17 +54,15 @@
                 </button>
             </div>
         </div>
-        {% endif %}
 
-        {% if Model %}
-        <div class="col-xs-12 col-sm-3 col-lg-2 text-center">
+        <div class="col-xs-12 col-sm-3 col-lg-3 text-center">
 
             <label>Statuses</label>
             <ul class="list-group">
                 {% for status in Model.statuses %}
-                <li class="list-group-item"><span>{{status.name}}</span>
+                <li class="list-group-item"><span class="txt-property">{{status.name}}</span>
 
-                    <form method="delete" action="/statuses/{{status.id}}">
+                    <form method="post" class="delete-property" action="/statuses/{{status.id}}">
                         <button type="submit" class="btn btn-danger ">X</button>
                     </form>
                 </li>
@@ -71,16 +78,8 @@
         {% endif %}
 
 
-        <div class="col-xs-12">
-            <hr/>
-        </div>
-        <div class="col-xs-12 text-center">
-            <button type="submit" class="btn btn-primary">Save Project</button>
-            <a href="../" class="btn btn-danger">Delete</a>
-            <a href="./" class="btn btn-default">Cancel</a>
 
-        </div>
-    </form>
+
     <!-- Priority Modal -->
     <div class="modal fade" id="priorityModal" tabindex="-1" role="dialog" aria-labelledby="priorityModalLabel"
          aria-hidden="true">
@@ -96,16 +95,6 @@
                         <label for="priorityName">Priority Name</label>
                         <input type="text" class="form-control" id="priorityName" name="priorityName"
                                placeholder="Priority Name" required="required" value=""/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="priorityColor">Priority Color</label>
-
-                        <div class="input-group c-picker">
-
-                            <input type="text" name="priorityColor" class="form-control"
-                                   id="priorityColor"/>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

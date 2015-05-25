@@ -7,7 +7,7 @@ var user = new ConnectRoles({
 		if (~accept.indexOf('html')) {
 			res.render('access-denied', {action: action});
 		} else {
-			res.send('Access Denied - You don\'t have permission to: ' + action);
+			return res.redirect('/login/');
 		}
 	}
 });

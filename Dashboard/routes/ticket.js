@@ -17,9 +17,13 @@ router.get('/ticket/:id', user.can('user'), function (req, res) {
         if (!err) {
 
             UserModel.find({}, function (err, users) {
+
                 if (!err) {
-                    project.users = users;
-                    return res.render('ticket', {Model: project});
+					var Model = {
+						users: users,
+						project: project
+					};
+                    return res.render('ticket', {Model: Model});
                 }
             });
         }
@@ -36,7 +40,10 @@ router.post('/ticket/:id', user.can('user'), function (req, res) {
         name: req.body.name,
         description: req.body.description,
         _status: req.body.status,
-        _priority: req.body.priority
+        _priority: req.body.priority,
+		_user:req.body.user,
+		_project:req.params.id
+
 
     });
 
@@ -75,21 +82,23 @@ router.get('/tickets/:id', user.can('user'), function (req, res) {
         }
         if (!err) {
 
-            ProjectModel.findById(req.params.id).populate('statuses priorities').exec(function (err, project) {
+            ProjectModel.findById(ticket._project).populate('statuses priorities').exec(function (err, project) {
                 if (!project) {
                     res.statusCode = 404;
                     return res.send('error', {error: 'Server  error 404'});
                 }
                 if (!err) {
+					UserModel.find({}, function (err, users) {
 
-                    UserModel.find({}, function (err, users) {
-                        if (!err) {
-                            project.users = users;
-                            project.tickets = [];
-                            project.tickets.push(ticket);
-                            return res.render('ticket', {Model: project});
-                        }
-                    });
+						if (!err) {
+							var Model = {
+								users: users,
+								project: project,
+								ticket: ticket
+							};
+							return res.render('ticket', {Model: Model});
+						}
+					});
                 }
             });
         } else {
@@ -100,7 +109,7 @@ router.get('/tickets/:id', user.can('user'), function (req, res) {
     });
 });
 
-router.put('/tickets/:id', user.can('user'), function (req, res) {
+router.post('/tickets/:id', user.can('user'), function (req, res) {
     return TicketModel.findById(req.params.id, function (err, ticket) {
         if (!ticket) {
             res.statusCode = 404;
@@ -113,7 +122,7 @@ router.put('/tickets/:id', user.can('user'), function (req, res) {
         return ticket.save(function (err) {
             if (!err) {
                 log.info("article updated");
-                return res.redirect('/ticket/' + ticket.id);
+                return res.redirect('/dashboard/' + ticket._project);
             } else {
                 if (err.name == 'ValidationError') {
                     req.flash('validationError', 'Oops! Wrong data. Please enter valid data');
@@ -127,16 +136,17 @@ router.put('/tickets/:id', user.can('user'), function (req, res) {
     });
 });
 
-router.delete('/tickets/:id', user.can('user'), function (req, res) {
+router.get('/removeTicket/:id', user.can('user'), function (req, res) {
     return TicketModel.findById(req.params.id, function (err, ticket) {
         if (!ticket) {
             res.statusCode = 404;
             return res.send('error', {error: 'Not found'});
         }
+		var project = ticket._project;
         return ticket.remove(function (err) {
             if (!err) {
                 log.info("article removed");
-                return res.redirect('/dashboard');
+                return res.redirect('/dashboard/'+ project);
             } else {
                 res.statusCode = 500;
                 log.error('Internal error(%d): %s', res.statusCode, err.message);
