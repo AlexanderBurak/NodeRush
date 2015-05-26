@@ -2,7 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
-var configDB = require('./config/database.js');
+var configDB = require('./db/database.js');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
@@ -10,7 +10,7 @@ var session = require('express-session');
 var routes = require('./routes/routes.js');
 var path = require('path');
 var swig = require('swig');
-var log = require('./config/log')(module);
+var log = require('./utils/log')(module);
 
 var app = express();
 
@@ -38,7 +38,7 @@ app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 
 // required for passport
-require('./config/passport')(passport)
+require('./auth/passport')(passport)
 app.use(session({
     secret: 'alexburak',
     resave: true,
@@ -54,7 +54,7 @@ app.use('/', require("./routes/projects"));
 app.use('/', require("./routes/ticket"));
 
 
-var user = require('./config/roles');
+var user = require('./auth/roles');
 app.use(user.middleware());
 
 

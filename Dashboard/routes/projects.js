@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var log = require('../config/log')(module);
+var log = require('../utils/log')(module);
 var ProjectModel = require('../models/project');
 var StatusModel = require('../models/status');
 var PriorityModel = require('../models/priority');
 var TicketModel = require('../models/ticket');
 var UserModel = require('../models/user');
-var user = require('../config/roles');
+var user = require('../auth/roles');
 
 router.get('/projects', user.can('user'), function(req, res) {
 	return ProjectModel.find({}, function(err, projects) {

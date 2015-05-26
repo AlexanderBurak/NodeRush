@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var log = require('../config/log')(module);
+var log = require('../utils/log')(module);
 var TicketModel = require('../models/ticket');
 var ProjectModel = require('../models/project');
 var UserModel = require('../models/user');
-var user = require('../config/roles');
+var user = require('../auth/roles');
 
 
 router.get('/ticket/:id', user.can('user'), function (req, res) {

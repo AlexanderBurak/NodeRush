@@ -1,7 +1,7 @@
-var user = require('../config/roles');
+var user = require('../auth/roles');
 var express = require('express');
 var router = express.Router();
-var log = require('../config/log')(module);
+var log = require('../utils/log')(module);
 var passport = require('passport');
 var UserModel = require('../models/user');
 
